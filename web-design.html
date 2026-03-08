@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xuxian.Z — Web Design</title>
+  <link rel="stylesheet" href="global.css" />
+</head>
+<body class="g-page">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ✏️  CONTENT CONFIG — web-design.html                        ║
+  ║  复制此文件即可生成 web-design.html / others.html            ║
+  ║  只需修改 nav 中的 active 项 + PAGE + PROJECTS 三处          ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                              ║
+  ║  【SITE】全站通用（与其他页面保持一致）                      ║
+  ║    nav.active   将当前页对应条目改为 true，其余为 false      ║
+  ║                                                              ║
+  ║  【PAGE】类别页内容                                          ║
+  ║    categoryTitle  左侧超大分类标题（如 "App\nDesign"）       ║
+  ║                   支持 \n 换行，可主动控制断行位置           ║
+  ║    categoryLabel  标题上方的小标签文字                       ║
+  ║    count          作品总数（显示在标题下方，如 "06 Works"）  ║
+  ║    description    右上角的分类描述文字                       ║
+  ║                                                              ║
+  ║  【PROJECTS】作品列表（列表式布局）                          ║
+  ║    name    作品名称（左对齐，点击跳转）                      ║
+  ║    year    年份（右对齐）                                    ║
+  ║    tags    标签数组（年份左侧，中灰色）                      ║
+  ║    href    跳转页面文件名                                    ║
+  ║                                                              ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+
+<script id="PAGE_CONFIG" type="application/json">
+{
+  "SITE": {
+    "logo": "Xuxian.Z",
+    "nav": [
+      { "label": "Home",       "href": "index.html",      "active": false },
+      { "label": "App Design", "href": "app-design.html", "active": false },
+      { "label": "Web Design", "href": "web-design.html", "active": true  },
+      { "label": "Others",     "href": "others.html",     "active": false },
+      { "label": "About",      "href": "about.html",      "active": false }
+    ],
+    "contactHref": "#"
+  },
+
+  "PAGE": {
+    "categoryTitle": "Web\nDesign",
+    "categoryLabel": "Category",
+    "count":         "05 Works",
+    "description":   "Editorial websites and digital experiences built with meticulous attention to typography, layout, and performance."
+  },
+
+  "PROJECTS": [
+    {
+      "name": "LocaterGPS",
+      "year": "2025",
+      "tags": ["Branding", "Development"],
+      "href": "project-locatergps.html"
+    },
+    {
+      "name": "Brandflux",
+      "year": "2024",
+      "tags": ["E-commerce", "Shopify"],
+      "href": "project-brandflux.html"
+    },
+    {
+      "name": "Luminary",
+      "year": "2024",
+      "tags": ["Editorial", "CMS"],
+      "href": "project-luminary.html"
+    },
+    {
+      "name": "Vaulted",
+      "year": "2023",
+      "tags": ["Landing Page", "React"],
+      "href": "project-vaulted.html"
+    },
+    {
+      "name": "Forma",
+      "year": "2022",
+      "tags": ["Portfolio", "Motion"],
+      "href": "project-forma.html"
+    }
+  ]
+}
+</script>
+
+<!-- ================================================================
+     ⚙️  渲染层（通常无需修改）
+     ================================================================ -->
+
+<style>
+  /* ── 类别页专属样式 ── */
+
+  /* 上方区域：左侧超大标题 + 右侧描述 */
+  .cat-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    padding: 56px var(--page-px) 0;
+    gap: 40px;
+    animation: g-fadeUp 0.8s var(--ease-spring) both;
+  }
+
+  /* 标题侧 */
+  .cat-title-col {}
+
+  .cat-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 16px;
+  }
+
+  .cat-title {
+    font-size: clamp(64px, 11vw, 150px);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 0.88;
+    white-space: pre-line; /* 支持 \n 换行 */
+  }
+
+  .cat-count {
+    margin-top: 24px;
+    font-size: 13px;
+    color: var(--gray);
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  /* 描述侧 */
+  .cat-desc-col {
+    padding-bottom: 12px;
+  }
+
+  .cat-desc {
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.45;
+    color: var(--gray-mid);
+    max-width: 420px;
+  }
+
+  /* 分隔线 */
+  .cat-divider {
+    border: none;
+    border-top: 1px solid var(--light-gray);
+    margin: 48px var(--page-px) 0;
+  }
+
+  /* ── 列表区 ── */
+  .cat-list {
+    padding: 0 var(--page-px) 120px;
+    animation: g-fadeUp 0.8s 0.15s var(--ease-spring) both;
+  }
+
+  /* 表头 */
+  .cat-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--light-gray);
+  }
+
+  .cat-list-header span {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  /* 每一行 */
+  .cat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0;
+    border-bottom: 1px solid var(--light-gray);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: background 0.18s ease;
+    /* 溢出动画 */
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 行内悬停背景滑入 */
+  .cat-row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--off-white);
+    transform: translateX(-100%);
+    transition: transform 0.3s var(--ease-spring);
+    z-index: 0;
+  }
+  .cat-row:hover::before { transform: translateX(0); }
+
+  .cat-row-left,
+  .cat-row-right {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 0;
+  }
+
+  /* 序号 */
+  .cat-row-num {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray);
+    letter-spacing: 0.04em;
+    min-width: 28px;
+    flex-shrink: 0;
+  }
+
+  /* 作品名 */
+  .cat-row-name {
+    font-size: clamp(18px, 2.4vw, 28px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    transition: letter-spacing 0.25s ease;
+  }
+  .cat-row:hover .cat-row-name { letter-spacing: -0.01em; }
+
+  /* 标签 */
+  .cat-row-tags {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .cat-row-tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--gray);
+    background: var(--light-gray);
+    padding: 3px 10px;
+    border-radius: 100px;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .cat-row:hover .cat-row-tag {
+    background: #ddd;
+    color: var(--black);
+  }
+
+  /* 年份 */
+  .cat-row-year {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gray);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    min-width: 44px;
+    text-align: right;
+  }
+
+  /* 跳转箭头 */
+  .cat-row-arrow {
+    font-size: 18px;
+    color: var(--black);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.2s ease, transform 0.2s var(--ease-spring);
+    margin-left: 12px;
+  }
+  .cat-row:hover .cat-row-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .cat-hero { grid-template-columns: 1fr; padding: 40px var(--page-px-mob) 0; gap: 24px; }
+    .cat-desc-col { padding-bottom: 0; }
+    .cat-divider  { margin: 36px var(--page-px-mob) 0; }
+    .cat-list     { padding: 0 var(--page-px-mob) 80px; }
+    .cat-row-tags { display: none; } /* 小屏隐藏标签 */
+    .cat-row-name { font-size: 18px; }
+  }
+</style>
+
+<!-- ── HEADER ── -->
+<header class="g-header" id="g-header">
+  <a href="index.html" class="g-logo" id="g-logo"></a>
+  <nav class="g-nav" id="g-nav"></nav>
+  <a href="#" class="g-btn-contact" id="g-contact">Contact <span class="arrow">→</span></a>
+</header>
+
+<!-- ================================================================
+     📌  类别页核心内容区 — HERO（左侧大标题 + 右侧描述）
+     ================================================================ -->
+<div class="cat-hero">
+  <div class="cat-title-col">
+    <p class="cat-label"   id="cat-label"></p>
+    <h1 class="cat-title"  id="cat-title"></h1>
+    <p class="cat-count"   id="cat-count"></p>
+  </div>
+  <div class="cat-desc-col">
+    <p class="cat-desc" id="cat-desc"></p>
+  </div>
+</div>
+
+<hr class="cat-divider" />
+
+<!-- ================================================================
+     📌  类别页核心内容区 — PROJECT LIST（列表布局）
+     ================================================================ -->
+<section class="cat-list">
+  <div class="cat-list-header">
+    <span>Project</span>
+    <span>Year</span>
+  </div>
+  <div id="cat-rows"></div>
+</section>
+
+<script src="global-nav.js"></script>
+<script>
+  const cfg = JSON.parse(document.getElementById('PAGE_CONFIG').textContent);
+
+  // ── Hero ──
+  document.getElementById('cat-label').textContent = cfg.PAGE.categoryLabel;
+  document.getElementById('cat-title').textContent = cfg.PAGE.categoryTitle;
+  document.getElementById('cat-count').textContent = cfg.PAGE.count;
+  document.getElementById('cat-desc').textContent  = cfg.PAGE.description;
+
+  // ── Project List ──
+  const rows = document.getElementById('cat-rows');
+  cfg.PROJECTS.forEach((p, i) => {
+    const a = document.createElement('a');
+    a.href      = p.href;
+    a.className = 'cat-row';
+    a.innerHTML = `
+      <div class="cat-row-left">
+        <span class="cat-row-num">${String(i + 1).padStart(2, '0')}</span>
+        <span class="cat-row-name">${p.name}</span>
+        <div class="cat-row-tags">
+          ${p.tags.map(t => `<span class="cat-row-tag">${t}</span>`).join('')}
+        </div>
+      </div>
+      <div class="cat-row-right">
+        <span class="cat-row-year">${p.year}</span>
+        <span class="cat-row-arrow">→</span>
+      </div>`;
+    rows.appendChild(a);
+  });
+
+  // ── Header 滚动边框 ──
+  const hdr = document.getElementById('g-header');
+  window.addEventListener('scroll', () =>
+    hdr.classList.toggle('is-scrolled', scrollY > 10), { passive: true });
+</script>
+
+</body>
+</html>

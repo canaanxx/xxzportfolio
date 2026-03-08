@@ -1,0 +1,160 @@
+/*
+  ================================================================
+  global.css — Miller.S 全站通用样式
+  ================================================================
+  使用方式：在每个 HTML 文件的 <head> 中引入：
+    <link rel="stylesheet" href="global.css" />
+
+  覆盖方式：如需修改某页面的特定样式，在 HTML 文件内的
+    <style> 标签中写同名选择器即可覆盖（层叠优先级更高）
+  ================================================================
+*/
+
+/* ─── RESET ───────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── TOKENS（修改这里即可全站换色/换字体）──── */
+:root {
+  --black:       #000000;
+  --white:       #ffffff;
+  --gray:        #888888;
+  --gray-mid:    #555555;
+  --light-gray:  #e8e8e8;
+  --off-white:   #f7f7f7;
+
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --header-h:    64px;      /* Header 高度 */
+  --subnav-h:    49px;      /* 返回栏 / 面包屑高度 */
+  --page-px:     40px;      /* 页面左右 Padding */
+  --page-px-mob: 20px;      /* 移动端左右 Padding */
+  --radius-card: 14px;      /* 作品卡片圆角 */
+  --radius-img:  16px;      /* 详情页图片圆角 */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font);
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+a   { color: inherit; }
+
+/* ─── HEADER ──────────────────────────────────── */
+.g-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--page-px);
+  height: var(--header-h);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.g-header.is-scrolled { border-color: var(--light-gray); }
+
+/* Logo */
+.g-logo {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--black);
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+/* 居中导航 */
+.g-nav {
+  display: flex;
+  gap: 32px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.g-nav a {
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  color: var(--black);
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.g-nav a:hover,
+.g-nav a.is-active {
+  opacity: 1;
+}
+
+/* 右侧 Contact 按钮 */
+.g-btn-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  background: var(--black);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  border-radius: 100px;
+  flex-shrink: 0;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.g-btn-contact:hover          { background: #222; transform: translateY(-1px); }
+.g-btn-contact .arrow         { transition: transform 0.2s ease; }
+.g-btn-contact:hover .arrow   { transform: translateX(2px); }
+
+/* ─── PAGE OFFSET（防止 fixed header 遮住内容）── */
+.g-page { padding-top: var(--header-h); }
+
+/* ─── SECTION DIVIDER ─────────────────────────── */
+.g-divider {
+  border: none;
+  border-top: 1px solid var(--light-gray);
+  margin: 0 var(--page-px);
+}
+
+/* ─── ANIMATIONS ──────────────────────────────── */
+@keyframes g-fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.g-anim-1 { animation: g-fadeUp 0.8s 0.00s var(--ease-spring) both; }
+.g-anim-2 { animation: g-fadeUp 0.8s 0.10s var(--ease-spring) both; }
+.g-anim-3 { animation: g-fadeUp 0.8s 0.20s var(--ease-spring) both; }
+.g-anim-4 { animation: g-fadeUp 0.8s 0.30s var(--ease-spring) both; }
+
+/* ─── RESPONSIVE ──────────────────────────────── */
+@media (max-width: 768px) {
+  :root { --page-px: var(--page-px-mob); }
+  .g-header { padding: 0 var(--page-px-mob); }
+  .g-nav    { display: none; }
+  .g-divider { margin: 0 var(--page-px-mob); }
+}
