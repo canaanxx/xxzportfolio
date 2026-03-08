@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xuxian.Z — Portfolio</title>
+  <link rel="stylesheet" href="global.css" />
+</head>
+<body class="g-page">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ✏️  CONTENT CONFIG — index.html                             ║
+  ║  修改此处即可更新首页所有文字、图片、链接                    ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                              ║
+  ║  【SITE】全站通用（所有页面保持一致）                        ║
+  ║    logo          左上角品牌名称                              ║
+  ║    nav           顶部导航（activeHref 标记当前激活项）       ║
+  ║    contactHref   Contact 按钮跳转地址                        ║
+  ║                                                              ║
+  ║  【PAGE】首页内容                                            ║
+  ║    heroTitle     超大主标题                                  ║
+  ║    yearStart     时间轴左侧年份                              ║
+  ║    yearEnd       时间轴右侧年份                              ║
+  ║    description   描述文字（保留 [ ] 中括号）                 ║
+  ║                                                              ║
+  ║  【PROJECTS】作品列表（可增减条目）                          ║
+  ║    name          作品名称                                    ║
+  ║    tags          分类标签数组                                ║
+  ║    href          跳转页面（统一指向 project-detail.html）    ║
+  ║    image         图片路径（统一放在 images/ 目录下）         ║
+  ║    alt           图片 alt 文本                               ║
+  ║                                                              ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+
+<script id="PAGE_CONFIG" type="application/json">
+{
+  "SITE": {
+    "logo": "Xuxian.Z",
+    "nav": [
+      { "label": "Home",       "href": "index.html",      "active": true  },
+      { "label": "App Design", "href": "app-design.html", "active": false },
+      { "label": "Web Design", "href": "web-design.html", "active": false },
+      { "label": "Others",     "href": "others.html",     "active": false },
+      { "label": "About",      "href": "about.html",      "active": false }
+    ],
+    "contactHref": "#"
+  },
+
+  "PAGE": {
+    "heroTitle":   "Portfolio",
+    "yearStart":   "2021",
+    "yearEnd":     "2026",
+    "description": "[Explore a curated collection of my most impactful projects, showcasing creativity, strategy, and attention to detail]"
+  },
+
+  "PROJECTS": [
+    {
+      "name":  "LocaterGPS",
+      "tags":  ["App Design", "Illustration", "Graphic"],
+      "href":  "project-locatergps.html",
+      "image": "images/locatergps1.jpg",
+      "alt":   "LocaterGPS"
+    },
+    {
+      "name":  "Brandflux",
+      "tags":  ["Product Design", "Development"],
+      "href":  "project-brandflux.html",
+      "image": "images/brandflux.jpg",
+      "alt":   "Brandflux"
+    },
+    {
+      "name":  "Luminary",
+      "tags":  ["UI/UX", "Branding"],
+      "href":  "project-luminary.html",
+      "image": "images/luminary.jpg",
+      "alt":   "Luminary"
+    },
+    {
+      "name":  "Axíom",
+      "tags":  ["App Design", "Strategy"],
+      "href":  "project-axiom.html",
+      "image": "images/axiom.jpg",
+      "alt":   "Axíom"
+    },
+    {
+      "name":  "Vaulted",
+      "tags":  ["Website", "Development"],
+      "href":  "project-vaulted.html",
+      "image": "images/vaulted.jpg",
+      "alt":   "Vaulted"
+    },
+    {
+      "name":  "Forma",
+      "tags":  ["Branding", "Motion", "Print"],
+      "href":  "project-forma.html",
+      "image": "images/forma.jpg",
+      "alt":   "Forma"
+    }
+  ]
+}
+</script>
+
+<!-- ================================================================
+     ⚙️  渲染层（通常无需修改）
+     ================================================================ -->
+
+<style>
+  /* ── 首页专属样式 ── */
+
+  /* Hero */
+  .hero-title-wrap { padding: 56px var(--page-px) 20px; }
+  .hero-title {
+    font-size: clamp(88px, 16vw, 200px);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 0.88;
+  }
+  .hero-years {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px var(--page-px);
+    border-top: 1px solid var(--light-gray);
+    border-bottom: 1px solid var(--light-gray);
+  }
+  .hero-years span { font-size: 13px; color: var(--gray); letter-spacing: 0.02em; }
+
+  .hero-desc {
+    padding: 60px var(--page-px) 68px;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hero-desc p {
+    font-size: clamp(20px, 2.8vw, 30px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.28;
+  }
+
+  /* Grid */
+  .projects { padding: 0 var(--page-px) 120px; }
+
+  .proj-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  .proj-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    animation: g-fadeUp 0.7s var(--ease-spring) both;
+  }
+  .proj-card:nth-child(1) { animation-delay: 0.08s; }
+  .proj-card:nth-child(2) { animation-delay: 0.16s; }
+  .proj-card:nth-child(3) { animation-delay: 0.24s; }
+  .proj-card:nth-child(4) { animation-delay: 0.32s; }
+  .proj-card:nth-child(5) { animation-delay: 0.40s; }
+  .proj-card:nth-child(6) { animation-delay: 0.48s; }
+
+  /* 图片容器 */
+  .proj-img-wrap {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    aspect-ratio: 4 / 3;
+    background: var(--off-white);
+    cursor: pointer;
+  }
+  /* 暗叠层 */
+  .proj-img-wrap::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0);
+    pointer-events: none; z-index: 1;
+    transition: background 0.4s ease;
+  }
+  .proj-card:hover .proj-img-wrap::after { background: rgba(0,0,0,0.07); }
+
+  .proj-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.65s var(--ease-spring);
+  }
+  .proj-card:hover .proj-img-wrap img { transform: scale(1.04); }
+
+  /* 悬停角标 */
+  .proj-hint {
+    position: absolute; bottom: 14px; right: 14px; z-index: 2;
+    width: 38px; height: 38px;
+    background: var(--white); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    opacity: 0; transform: scale(0.6) translateY(6px);
+    transition: opacity 0.28s ease, transform 0.28s var(--ease-spring);
+    pointer-events: none;
+  }
+  .proj-card:hover .proj-hint { opacity: 1; transform: scale(1) translateY(0); }
+
+  /* Meta */
+  .proj-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 13px 0 0; gap: 16px;
+  }
+  .proj-name { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; white-space: nowrap; }
+  .proj-tags { font-size: 13px; color: var(--gray); text-align: right; white-space: nowrap; }
+  .proj-tags span + span::before { content: " | "; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .proj-grid { grid-template-columns: 1fr; gap: 20px; }
+    .hero-desc  { padding: 40px var(--page-px-mob) 48px; }
+    .projects   { padding: 0 var(--page-px-mob) 80px; }
+  }
+</style>
+
+<!-- ── HEADER（由 JS 渲染）── -->
+<header class="g-header" id="g-header">
+  <a href="index.html" class="g-logo" id="g-logo"></a>
+  <nav class="g-nav" id="g-nav"></nav>
+  <a href="#" class="g-btn-contact" id="g-contact">Contact <span class="arrow">→</span></a>
+</header>
+
+<!-- ================================================================
+     📌  首页核心内容区 — HERO
+     ================================================================ -->
+<section>
+  <div class="hero-title-wrap g-anim-1">
+    <h1 class="hero-title" id="hero-title"></h1>
+  </div>
+  <div class="hero-years g-anim-2">
+    <span id="year-start"></span>
+    <span id="year-end"></span>
+  </div>
+  <div class="hero-desc g-anim-3">
+    <p id="hero-desc"></p>
+  </div>
+</section>
+
+<!-- ================================================================
+     📌  首页核心内容区 — PROJECT GRID
+     ================================================================ -->
+<section class="projects">
+  <div class="proj-grid" id="proj-grid"></div>
+</section>
+
+<script src="global-nav.js"></script>
+<script>
+  const cfg = JSON.parse(document.getElementById('PAGE_CONFIG').textContent);
+
+  // ── Hero ──
+  document.getElementById('hero-title').textContent = cfg.PAGE.heroTitle;
+  document.getElementById('year-start').textContent = cfg.PAGE.yearStart;
+  document.getElementById('year-end').textContent   = cfg.PAGE.yearEnd;
+  document.getElementById('hero-desc').textContent  = cfg.PAGE.description;
+
+  // ── Project Grid ──
+  const grid = document.getElementById('proj-grid');
+  cfg.PROJECTS.forEach(p => {
+    const a = document.createElement('a');
+    a.href      = p.href;
+    a.className = 'proj-card';
+    a.innerHTML = `
+      <div class="proj-img-wrap">
+        <img src="${p.image}" alt="${p.alt}" loading="lazy"
+             onerror="this.style.opacity='0'" />
+        <span class="proj-hint">↗</span>
+      </div>
+      <div class="proj-meta">
+        <span class="proj-name">${p.name}</span>
+        <div class="proj-tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div>
+      </div>`;
+    grid.appendChild(a);
+  });
+
+  // ── 滚动 Header 边框 ──
+  const hdr = document.getElementById('g-header');
+  window.addEventListener('scroll', () =>
+    hdr.classList.toggle('is-scrolled', scrollY > 10), { passive: true });
+</script>
+
+</body>
+</html>
